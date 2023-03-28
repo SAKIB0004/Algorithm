@@ -1,28 +1,28 @@
-int lenOfLongSubarr(int arr[], int N, int K)
-{
- 
-    // Variable to store the answer
-    int maxlength = 0;
- 
-    for (int i = 0; i < N; i++) {
- 
-        // Variable to store sum of subarrays
-        int Sum = 0;
- 
-        for (int j = i; j < N; j++) {
- 
-            // Storing sum of subarrays
-            Sum += arr[j];
- 
-            // if Sum equals K
-            if (Sum == K) {
- 
-                // Update maxLength
-                maxlength = max(maxlength, j - i + 1);
+int lenOfLongSubarr(int A[], int N, int K){
+
+    int i = 0, j = 0, sum = 0;
+    int maxLen = INT_MIN;
+
+    while (j < N) {
+        sum += A[j];  //calculation
+        if (sum == K) {
+          maxLen = max(maxLen, j-i+1);     //taking results
+            j++;
+        }
+        else if (sum < K) {    //adjusting window
+            j++;
+        }
+        else if (sum > K) {     //adjusting window
+            while (sum > K) {
+                sum -= A[i];
+                 i++;
             }
+              if(sum == K){
+              maxLen = max(maxLen, j-i+1);
+            }
+            j++;
         }
     }
- 
-    // Return the maximum length
-    return maxlength;
+    return maxLen;
 }
+
