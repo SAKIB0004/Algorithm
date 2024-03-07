@@ -1,0 +1,64 @@
+
+#define ll long long
+#define x first
+#define y second
+
+const int Nmax = 100000;
+
+ll dist(pair<ll,ll> A, pair<ll,ll> B)
+{
+    return (A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y);
+}
+
+/// cmp function use for merge
+bool cmp(pair<ll,ll> A, pair<ll,ll> B)
+{
+    return A.y < B.y;
+}
+
+ll solve(int st, int dr, vector<pair<ll,ll>>& points)
+{
+    /// basic cases
+    if (st >= dr)
+        return INT_MAX;
+    else if (st + 1 == dr)
+    {
+        /// sort points after y
+        if (points[st].y > points[dr].y)
+            swap(points[st], points[dr]);
+
+        return dist(points[st], points[dr]);
+    }
+
+    int m = (st + dr) / 2;
+    ll medianX = points[m].x; /// median of X[st...dr]
+    ll d1 = solve(st, m, points); /// solve for [st...m]
+    ll d2 = solve(m + 1, dr, points); /// solve for [m + 1...dr]
+    ll  d = min(d1, d2); /// combine solutions
+
+     sort(points.begin(),points.end(),cmp);
+     vector<pair<ll,ll>> auxiliar(points.begin(),points.end());
+
+
+    int dim = 0;
+
+    /// find "special" points (points at dist<=d from median)
+    for (int i = st; i <= dr; ++i)
+        if (abs(points[i].x - medianX) <= d)
+            auxiliar[dim++] = points[i];
+
+    for (int i = 0; i < dim; ++i)
+    {
+        int cnt = 8; /// number of "interesting" points for points[i]
+        int j = i - 1;
+
+        while (j >= 0 && cnt > 0)
+        {
+            d = min(d, dist(auxiliar[i], auxiliar[j]));
+            j--;
+            cnt--;
+        }
+    }
+
+    return d;
+}
