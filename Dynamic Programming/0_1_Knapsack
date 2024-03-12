@@ -1,0 +1,50 @@
+#define     ll             long long
+
+/*int Knapsack_dp(int n, int wt[],int p[], int m){
+    ll K[n+1][m+1];
+    for(int i=0;i<=m;i++) K[0][i]=0;
+    for(int i=0;i<=n;i++) K[i][0]=0;
+    for(int i=1;i<=n;i++){
+        for(int w=1;w<=m;w++){
+            //if(i==0 or w==0) K[i][w]=0;
+
+            if(wt[i] <= w){
+                K[i][w] = max(p[i-1]+K[i-1][w-wt[i]] , K[i-1][w]);
+            }
+
+            else K[i][w] = K[i-1][w];
+        }
+    }
+    return K[n][m];
+
+}*/
+
+int Knapsack_dp(int n, int wt[],int p[], int m){
+    ll K[n+1][m+1];
+
+    for(int i=0;i<=n;i++){
+        for(int w=0;w<=m;w++){
+            if(i==0 or w==0) K[i][w]=0;
+
+            else if(wt[i-1] <= w){
+                K[i][w] = max(p[i-1]+K[i-1][w-wt[i-1]] , K[i-1][w]);
+            }
+
+            else K[i][w] = K[i-1][w];
+        }
+    }
+    return K[n][m];
+
+}
+int main(){
+    int n;cin>>n;
+
+    int p[n],wt[n];
+    for(int i=0;i<n;i++) cin>>wt[i];
+    for(int i=0;i<n;i++) cin>>p[i];
+
+    int m;cin>>m;
+
+    int ans = Knapsack_dp(n, wt, p, m);
+    cout<<ans<<endl;
+}
