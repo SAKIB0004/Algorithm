@@ -1,0 +1,25 @@
+//Tabulation Approach
+
+int mcm(int n, int P[]){
+    int C[n][n], K[n][n];
+
+    int j,min,q;
+    for (int i = 1; i < n; i++) C[i][i] = 0;
+
+    for(int d=1;d<n-1;d++){
+        for(int i=1;i<n-d;i++){
+            j=i+d;
+            min=INT_MAX;
+            for(int k=i;k<=j-1;k++){
+                q=C[i][k]+C[k+1][j]+P[i-1]*P[k]*P[j];
+
+                if(q<min){
+                    min = q;
+                    K[i][k]=k;
+                }
+            }
+            C[i][j]= min;
+        }
+    }
+    return C[1][n-1];
+}
