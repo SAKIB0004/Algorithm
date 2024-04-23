@@ -6,13 +6,17 @@ int cutRod(int prices[], int n){
                 DP[i][j] = 0;
             }
             else {
-                if (i > j) {
-                      DP[i][j] = DP[i - 1][j];
+                if (i == 1) {
+                    DP[i][j] = j * prices[i - 1];
                 }
                 else {
-                    DP[i][j] = max(prices[i - 1] + DP[i][j - i],   DP[i - 1][j]);
-               }
-                
+                      if (i > j) {
+                         DP[i][j] = DP[i - 1][j];
+                     }
+                     else {
+                         DP[i][j] = max(prices[i - 1] + DP[i][j - i],   DP[i - 1][j]);
+                    }
+                }
             }
         }
     }
